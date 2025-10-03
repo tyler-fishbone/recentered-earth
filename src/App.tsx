@@ -28,7 +28,7 @@ export default function App() {
   // toggle for graticule visibility
   const [showGraticule, setShowGraticule] = useState(false);
 
-  const [viewState, setViewState] = useState({
+  const [viewState] = useState({
     longitude: 0,
     latitude: 0,
     zoom: 0.5,
