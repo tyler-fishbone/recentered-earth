@@ -19,11 +19,14 @@ export default function App() {
     null
   );
 
-  // rotation center — this is the “new 0,0” for projection
+  // rotation center — this is the "new 0,0" for projection
   const [center, setCenter] = useState<{ lon: number; lat: number }>({
     lon: 0,
     lat: 0,
   });
+
+  // toggle for graticule visibility
+  const [showGraticule, setShowGraticule] = useState(false);
 
   const [viewState, setViewState] = useState({
     longitude: 0,
@@ -46,6 +49,7 @@ export default function App() {
         ),
       };
       setData(countries);
+      console.log(countries);
 
       const graticule = geoGraticule10();
       setGraticuleData({
@@ -76,7 +80,8 @@ export default function App() {
 
   const layers = useMemo(() => {
     return [
-      rotatedGraticule &&
+      showGraticule &&
+        rotatedGraticule &&
         new GeoJsonLayer({
           id: 'graticule',
           data: rotatedGraticule,
@@ -94,6 +99,7 @@ export default function App() {
           getFillColor: [200, 200, 200, 180],
           getLineColor: [80, 80, 80, 255],
           lineWidthMinPixels: 1,
+          wrapLongitude: true,
         }),
       new ScatterplotLayer({
         id: 'center-point',
@@ -108,12 +114,12 @@ export default function App() {
         radiusMaxPixels: 20,
       }),
     ].filter(Boolean);
-  }, [rotatedGraticule, rotatedData, centerPointData]);
+  }, [showGraticule, rotatedGraticule, rotatedData, centerPointData]);
 
   return (
     <>
       <DeckGL
-        views={new MapView({ repeat: true })}
+        views={new MapView({ repeat: false })}
         viewState={viewState}
         controller={true}
         initialViewState={viewState}
@@ -130,6 +136,15 @@ export default function App() {
           width: '350px',
         }}
       >
+        <Stack direction="row" spacing={2} justifyContent="center" width="100%">
+          <Button
+            onClick={() => setShowGraticule(!showGraticule)}
+            variant={showGraticule ? 'contained' : 'outlined'}
+            color={showGraticule ? 'primary' : 'secondary'}
+          >
+            {showGraticule ? 'Hide Graticule' : 'Show Graticule'}
+          </Button>
+        </Stack>
         <Stack direction="row" spacing={2} justifyContent="center" width="100%">
           <Button
             onClick={() =>
