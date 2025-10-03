@@ -9,7 +9,6 @@ import { geoGraticule10 } from "d3-geo";
 export default function App() {
   const [data, setData] = useState<FeatureCollection<Geometry> | null>(null);
   const [graticuleData, setGraticuleData] = useState<FeatureCollection | null>(null);
-  const [flipped, setFlipped] = useState(false);
   const [viewState, setViewState] = useState({
     longitude: 0,
     latitude: 0,
@@ -23,6 +22,13 @@ export default function App() {
     }));
   };
 
+  const handleRotateClockwise = () => {
+    setViewState((prev) => ({
+      ...prev,
+      bearing: prev.bearing - 90,
+    }));
+  };
+
   useEffect(() => {
     const loadData = async () => {
       const res = await fetch("/data/countries.topo.json");
@@ -31,6 +37,7 @@ export default function App() {
       console.log(all);
       const greenlandOnly: FeatureCollection<Geometry, GeoJsonProperties> = {
         type: "FeatureCollection",
+        // features: all.features.filter((f) => f.properties?.["NAME"] !== undefined), // use to see all countries
         features: all.features.filter((f) => f.properties?.["NAME"] === "Greenland"),
       };
       console.log(greenlandOnly);
@@ -88,6 +95,22 @@ export default function App() {
         }}
       >
         {viewState.bearing === 0 ? "South-Up" : "North-Up"}
+      </button>
+      <button
+        onClick={handleRotateClockwise}
+        style={{
+          position: "absolute",
+          bottom: 10,
+          left: 10,
+          padding: "6px 12px",
+          background: "white",
+          border: "1px solid #ccc",
+          color: "black",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+      >
+        Rotate Clockwise
       </button>
     </>
   );
