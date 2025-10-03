@@ -1,0 +1,41 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Africa" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-20, -35],
+            [50, -35],
+            [50, 0],
+            [30, 0],
+            [30, 35],
+            [-20, 35],
+            [-20, -35]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Greenland" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-75, 60],
+            [-10, 60],
+            [-10, 72.5],
+            [-30, 72.5],
+            [-30, 85],
+            [-75, 85],
+            [-75, 60]
+          ]
+        ]
+      }
+    }
+  ]
+}
