@@ -113,7 +113,7 @@ export default function App() {
   return (
     <>
       <DeckGL
-        views={new MapView({ repeat: false })}
+        views={new MapView({ repeat: true })}
         viewState={viewState}
         controller={true}
         initialViewState={viewState}
@@ -124,7 +124,7 @@ export default function App() {
         style={{
           position: 'absolute',
           bottom: 50,
-          left: 10,
+          right: 10,
           display: 'flex',
           gap: '10px',
           width: '350px',
