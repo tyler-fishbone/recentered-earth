@@ -127,7 +127,7 @@ export default function App() {
           left: 10,
           display: 'flex',
           gap: '10px',
-          width: '400px',
+          width: '350px',
         }}
       >
         <Stack direction="row" spacing={2} justifyContent="center" width="100%">
@@ -137,7 +137,7 @@ export default function App() {
             }
             variant="contained"
           >
-            Shift Lat +10°
+            Lat +10°
           </Button>
         </Stack>
         <Stack direction="row" spacing={2}>
@@ -147,7 +147,7 @@ export default function App() {
             }
             variant="contained"
           >
-            Shift Lon -10°
+            Lon -10°
           </Button>
           <Button
             onClick={() => setCenter({ lon: 0, lat: 0 })}
@@ -161,7 +161,7 @@ export default function App() {
             }
             variant="contained"
           >
-            Shift Lon +10°
+            Lon +10°
           </Button>
         </Stack>
         <Stack direction="row" spacing={2} justifyContent="center" width="100%">
@@ -171,7 +171,7 @@ export default function App() {
             }
             variant="contained"
           >
-            Shift Lat -10°
+            Lat -10°
           </Button>
         </Stack>
       </Stack>
