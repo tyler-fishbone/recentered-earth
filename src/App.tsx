@@ -28,8 +28,10 @@ import {
   AccordionDetails,
   Switch,
   FormControlLabel,
+  ThemeProvider,
 } from '@mui/material';
 import { InfoOutlined, ExpandMore, Settings, Close } from '@mui/icons-material';
+import { darkTheme } from './theme';
 
 export default function App() {
   const [data, setData] = useState<FeatureCollection<Geometry> | null>(null);
@@ -109,7 +111,7 @@ export default function App() {
           data: rotatedGraticule,
           stroked: true,
           filled: false,
-          getLineColor: [150, 150, 150, 200],
+          getLineColor: [100, 100, 100, 150],
           lineWidthMinPixels: 1,
           wrapLongitude: true,
         }),
@@ -119,8 +121,8 @@ export default function App() {
           data: rotatedData,
           filled: true,
           stroked: true,
-          getFillColor: [200, 200, 200, 180],
-          getLineColor: [80, 80, 80, 255],
+          getFillColor: [60, 60, 60, 200],
+          getLineColor: [40, 40, 40, 255],
           lineWidthMinPixels: 1,
           wrapLongitude: true,
         }),
@@ -140,89 +142,70 @@ export default function App() {
   }, [showGraticule, rotatedGraticule, rotatedData, centerPointData]);
 
   return (
-    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Top App Bar */}
-      <AppBar position="static" sx={{ zIndex: 1300 }}>
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Recentered Earth
-          </Typography>
-          <IconButton
-            color="inherit"
-            onClick={() => setInfoDialogOpen(true)}
-            aria-label="About Recentered Earth"
-          >
-            <InfoOutlined />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
-      {/* Main Content Area */}
-      <Box sx={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-        <DeckGL
-          views={new MapView({ repeat: false })}
-          viewState={viewState}
-          onViewStateChange={({ viewState }) =>
-            setViewState({
-              longitude: viewState.longitude,
-              latitude: viewState.latitude,
-              zoom: viewState.zoom,
-              bearing: viewState.bearing || 0,
-            })
-          }
-          controller={true}
-          initialViewState={viewState}
-          layers={layers}
-        />
-
-        {/* Navigation Controls - Above Accordion */}
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: controlsAccordionOpen ? 200 : 60,
-            right: 10,
-            zIndex: 1200,
-            transition: 'bottom 0.3s ease-in-out',
-          }}
-        >
-          <Stack spacing={2} sx={{ width: '350px' }}>
-            {/* View Controls */}
-            <Stack
-              direction="row"
-              spacing={2}
-              justifyContent="flex-end"
-              flexWrap="wrap"
+    <ThemeProvider theme={darkTheme}>
+      <Box
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: '#121212',
+        }}
+      >
+        {/* Top App Bar */}
+        <AppBar position="static" sx={{ zIndex: 1300 }}>
+          <Toolbar>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, fontWeight: 600 }}
             >
-              <Button
-                onClick={() =>
-                  setViewState(v => ({
-                    ...v,
-                    bearing: (v.bearing + 90) % 360,
-                  }))
-                }
-                variant="contained"
-                color="secondary"
-                size="small"
-              >
-                Rotate 90°
-              </Button>
-              <Button
-                onClick={() =>
-                  setViewState(v => ({
-                    ...v,
-                    bearing: (v.bearing + 180) % 360,
-                  }))
-                }
-                variant="contained"
-                color="secondary"
-                size="small"
-              >
-                Mirror
-              </Button>
-            </Stack>
+              Recentered Earth
+            </Typography>
+            <IconButton
+              color="inherit"
+              onClick={() => setInfoDialogOpen(true)}
+              aria-label="About Recentered Earth"
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                },
+              }}
+            >
+              <InfoOutlined />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
 
-            {/* Data Rotation Controls */}
-            <Stack spacing={2}>
+        {/* Main Content Area */}
+        <Box sx={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+          <DeckGL
+            views={new MapView({ repeat: false })}
+            viewState={viewState}
+            onViewStateChange={({ viewState }) =>
+              setViewState({
+                longitude: viewState.longitude,
+                latitude: viewState.latitude,
+                zoom: viewState.zoom,
+                bearing: viewState.bearing || 0,
+              })
+            }
+            controller={true}
+            initialViewState={viewState}
+            layers={layers}
+          />
+
+          {/* Navigation Controls - Above Accordion */}
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: controlsAccordionOpen ? 200 : 60,
+              right: 10,
+              zIndex: 1200,
+              transition: 'bottom 0.3s ease-in-out',
+            }}
+          >
+            <Stack spacing={2} sx={{ width: '350px' }}>
+              {/* View Controls */}
               <Stack
                 direction="row"
                 spacing={2}
@@ -231,80 +214,157 @@ export default function App() {
               >
                 <Button
                   onClick={() =>
-                    setCenter(c => ({
-                      ...c,
-                      lat: Math.min(c.lat + 10, 85),
+                    setViewState(v => ({
+                      ...v,
+                      bearing: (v.bearing + 90) % 360,
                     }))
                   }
                   variant="contained"
+                  color="secondary"
                   size="small"
+                  sx={{
+                    backgroundColor: '#9c27b0',
+                    '&:hover': {
+                      backgroundColor: '#8e24aa',
+                    },
+                  }}
                 >
-                  Lat +10°
+                  Rotate 90°
+                </Button>
+                <Button
+                  onClick={() =>
+                    setViewState(v => ({
+                      ...v,
+                      bearing: (v.bearing + 180) % 360,
+                    }))
+                  }
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  sx={{
+                    backgroundColor: '#9c27b0',
+                    '&:hover': {
+                      backgroundColor: '#8e24aa',
+                    },
+                  }}
+                >
+                  Mirror
                 </Button>
               </Stack>
-              <Stack
-                direction="row"
-                spacing={1}
-                justifyContent="flex-end"
-                flexWrap="wrap"
-              >
-                <Button
-                  onClick={() =>
-                    setCenter(c => ({
-                      ...c,
-                      lon: ((c.lon - 10 + 540) % 360) - 180,
-                    }))
-                  }
-                  variant="contained"
-                  size="small"
+
+              {/* Data Rotation Controls */}
+              <Stack spacing={2}>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  justifyContent="flex-end"
+                  flexWrap="wrap"
                 >
-                  Lon -10°
-                </Button>
-                <Button
-                  onClick={() => setCenter({ lon: 0, lat: 0 })}
-                  variant="contained"
-                  size="small"
+                  <Button
+                    onClick={() =>
+                      setCenter(c => ({
+                        ...c,
+                        lat: Math.min(c.lat + 10, 85),
+                      }))
+                    }
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      backgroundColor: '#1976d2',
+                      '&:hover': {
+                        backgroundColor: '#1565c0',
+                      },
+                    }}
+                  >
+                    Lat +10°
+                  </Button>
+                </Stack>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  justifyContent="flex-end"
+                  flexWrap="wrap"
                 >
-                  Reset
-                </Button>
-                <Button
-                  onClick={() =>
-                    setCenter(c => ({
-                      ...c,
-                      lon: ((c.lon + 10 + 540) % 360) - 180,
-                    }))
-                  }
-                  variant="contained"
-                  size="small"
+                  <Button
+                    onClick={() =>
+                      setCenter(c => ({
+                        ...c,
+                        lon: ((c.lon - 10 + 540) % 360) - 180,
+                      }))
+                    }
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      backgroundColor: '#1976d2',
+                      '&:hover': {
+                        backgroundColor: '#1565c0',
+                      },
+                    }}
+                  >
+                    Lon -10°
+                  </Button>
+                  <Button
+                    onClick={() => setCenter({ lon: 0, lat: 0 })}
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      backgroundColor: '#1976d2',
+                      '&:hover': {
+                        backgroundColor: '#1565c0',
+                      },
+                    }}
+                  >
+                    Reset
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      setCenter(c => ({
+                        ...c,
+                        lon: ((c.lon + 10 + 540) % 360) - 180,
+                      }))
+                    }
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      backgroundColor: '#1976d2',
+                      '&:hover': {
+                        backgroundColor: '#1565c0',
+                      },
+                    }}
+                  >
+                    Lon +10°
+                  </Button>
+                </Stack>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  justifyContent="flex-end"
+                  flexWrap="wrap"
                 >
-                  Lon +10°
-                </Button>
-              </Stack>
-              <Stack
-                direction="row"
-                spacing={2}
-                justifyContent="flex-end"
-                flexWrap="wrap"
-              >
-                <Button
-                  onClick={() =>
-                    setCenter(c => ({
-                      ...c,
-                      lat: Math.max(c.lat - 10, -85),
-                    }))
-                  }
-                  variant="contained"
-                  size="small"
-                >
-                  Lat -10°
-                </Button>
+                  <Button
+                    onClick={() =>
+                      setCenter(c => ({
+                        ...c,
+                        lat: Math.max(c.lat - 10, -85),
+                      }))
+                    }
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      backgroundColor: '#1976d2',
+                      '&:hover': {
+                        backgroundColor: '#1565c0',
+                      },
+                    }}
+                  >
+                    Lat -10°
+                  </Button>
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
-        </Box>
+          </Box>
 
-        {
-          /* Map Controls Accordion - Bottom */
+          {/* Map Controls Accordion - Bottom */}
           <Box
             sx={{
               position: 'absolute',
@@ -320,23 +380,33 @@ export default function App() {
               sx={{
                 borderRadius: controlsAccordionOpen ? '16px 16px 0 0' : '16px',
                 '&:before': { display: 'none' },
-                boxShadow: 3,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+                backgroundColor: '#1e1e1e',
               }}
             >
               <AccordionSummary
-                expandIcon={<ExpandMore />}
+                expandIcon={<ExpandMore sx={{ color: '#ffffff' }} />}
                 sx={{
                   minHeight: 48,
+                  backgroundColor: '#2a2a2a',
+                  borderRadius: controlsAccordionOpen
+                    ? '16px 16px 0 0'
+                    : '16px',
                   '& .MuiAccordionSummary-content': {
                     alignItems: 'center',
                     gap: 1,
                   },
                 }}
               >
-                <Settings />
-                <Typography variant="subtitle1">Map Controls</Typography>
+                <Settings sx={{ color: '#ffffff' }} />
+                <Typography
+                  variant="subtitle1"
+                  sx={{ color: '#ffffff', fontWeight: 500 }}
+                >
+                  Map Controls
+                </Typography>
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails sx={{ backgroundColor: '#1e1e1e' }}>
                 <Stack spacing={3} sx={{ p: 2 }}>
                   {/* Graticule Toggle */}
                   <FormControlLabel
@@ -346,13 +416,17 @@ export default function App() {
                         onChange={e => setShowGraticule(e.target.checked)}
                       />
                     }
-                    label="Show Graticule"
+                    label={
+                      <Typography sx={{ color: '#ffffff', fontSize: '0.9rem' }}>
+                        Graticule
+                      </Typography>
+                    }
                   />
                 </Stack>
               </AccordionDetails>
             </Accordion>
           </Box>
-        }
+        </Box>
 
         {/* Info Dialog */}
         <Dialog
@@ -366,24 +440,30 @@ export default function App() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
+              backgroundColor: '#2a2a2a',
+              color: '#ffffff',
+              borderBottom: '1px solid #333',
             }}
           >
-            About Recentered Earth
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              About Recentered Earth
+            </Typography>
             <IconButton
               onClick={() => setInfoDialogOpen(false)}
               aria-label="close"
               size="small"
+              sx={{ color: '#ffffff' }}
             >
               <Close />
             </IconButton>
           </DialogTitle>
-          <DialogContent>
-            <Typography variant="body1" sx={{ mb: 2 }}>
+          <DialogContent sx={{ backgroundColor: '#1e1e1e', color: '#ffffff' }}>
+            <Typography variant="body1" sx={{ mb: 2, color: '#ffffff' }}>
               Recentered Earth lets you explore how perspective shapes geography
               by shifting the center of the world map. Use the controls below to
               move, zoom, and toggle map layers.
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" sx={{ color: '#b3b3b3' }}>
               This interactive tool demonstrates how different map projections
               and center points can dramatically change our perception of global
               relationships and distances. Experiment with the latitude and
@@ -391,16 +471,24 @@ export default function App() {
               viewpoints.
             </Typography>
           </DialogContent>
-          <DialogActions>
+          <DialogActions
+            sx={{ backgroundColor: '#1e1e1e', padding: '16px 24px' }}
+          >
             <Button
               onClick={() => setInfoDialogOpen(false)}
               variant="contained"
+              sx={{
+                backgroundColor: '#1976d2',
+                '&:hover': {
+                  backgroundColor: '#1565c0',
+                },
+              }}
             >
               Close
             </Button>
           </DialogActions>
         </Dialog>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
