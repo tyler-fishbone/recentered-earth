@@ -9,6 +9,7 @@ import {
   MapControlsAccordion,
   InfoDialog,
   Map,
+  MapCenterDisplay,
 } from './components';
 import type { ViewState, Center } from './types/map';
 
@@ -63,6 +64,12 @@ export default function App() {
             viewState={viewState}
             onViewStateChange={setViewState}
             layers={layers}
+          />
+
+          {/* Map Center Display - Bottom Left */}
+          <MapCenterDisplay
+            center={center}
+            isAccordionOpen={controlsAccordionOpen}
           />
 
           {/* Navigation Controls - Above Accordion */}
