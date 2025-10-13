@@ -25,7 +25,7 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
     });
   };
 
-  const handleMirror = () => {
+  const handleFlip = () => {
     onViewStateChange({
       ...viewState,
       bearing: (viewState.bearing + 180) % 360,
@@ -160,6 +160,15 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
           flexWrap="wrap"
         >
           <Button
+            onClick={handleFlip}
+            variant="contained"
+            color="secondary"
+            size="small"
+            sx={secondaryButtonSx}
+          >
+            Flip
+          </Button>
+          <Button
             onClick={handleRotate90}
             variant="contained"
             color="secondary"
@@ -167,15 +176,6 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
             sx={secondaryButtonSx}
           >
             Rotate 90°
-          </Button>
-          <Button
-            onClick={handleMirror}
-            variant="contained"
-            color="secondary"
-            size="small"
-            sx={secondaryButtonSx}
-          >
-            Mirror
           </Button>
         </Stack>
       </Stack>
