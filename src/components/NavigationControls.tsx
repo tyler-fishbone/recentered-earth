@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Stack, Button } from '@mui/material';
+import { Refresh } from '@mui/icons-material';
 import type { ViewState, Center } from '../types/map';
 
 interface NavigationControlsProps {
@@ -60,7 +61,12 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
   };
 
   const handleReset = () => {
+    // Reset everything: center, rotation, and mirror
     onCenterChange({ lon: 0, lat: 0 });
+    onViewStateChange({
+      ...viewState,
+      bearing: 0,
+    });
   };
 
   const buttonSx = {
@@ -88,11 +94,69 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
       }}
     >
       <Stack spacing={2} sx={{ width: '350px' }}>
-        {/* View Controls */}
+        {/* 4-Way Navigation Controller */}
+        <Stack spacing={1} alignItems="center">
+          {/* Top row - Lat +10° */}
+          <Button
+            onClick={handleLatIncrease}
+            variant="contained"
+            size="small"
+            sx={buttonSx}
+          >
+            Lat +10°
+          </Button>
+
+          {/* Middle row - Lon -10°, Reset, Lon +10° */}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Button
+              onClick={handleLonDecrease}
+              variant="contained"
+              size="small"
+              sx={buttonSx}
+            >
+              Lon -10°
+            </Button>
+            <Button
+              onClick={handleReset}
+              variant="contained"
+              size="small"
+              sx={{
+                ...buttonSx,
+                minWidth: '48px',
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+              }}
+              aria-label="Reset everything"
+            >
+              <Refresh />
+            </Button>
+            <Button
+              onClick={handleLonIncrease}
+              variant="contained"
+              size="small"
+              sx={buttonSx}
+            >
+              Lon +10°
+            </Button>
+          </Stack>
+
+          {/* Bottom row - Lat -10° */}
+          <Button
+            onClick={handleLatDecrease}
+            variant="contained"
+            size="small"
+            sx={buttonSx}
+          >
+            Lat -10°
+          </Button>
+        </Stack>
+
+        {/* View Controls - Below navigation */}
         <Stack
           direction="row"
           spacing={2}
-          justifyContent="flex-end"
+          justifyContent="center"
           flexWrap="wrap"
         >
           <Button
@@ -113,71 +177,6 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
           >
             Mirror
           </Button>
-        </Stack>
-
-        {/* Data Rotation Controls */}
-        <Stack spacing={2}>
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="flex-end"
-            flexWrap="wrap"
-          >
-            <Button
-              onClick={handleLatIncrease}
-              variant="contained"
-              size="small"
-              sx={buttonSx}
-            >
-              Lat +10°
-            </Button>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={1}
-            justifyContent="flex-end"
-            flexWrap="wrap"
-          >
-            <Button
-              onClick={handleLonDecrease}
-              variant="contained"
-              size="small"
-              sx={buttonSx}
-            >
-              Lon -10°
-            </Button>
-            <Button
-              onClick={handleReset}
-              variant="contained"
-              size="small"
-              sx={buttonSx}
-            >
-              Reset
-            </Button>
-            <Button
-              onClick={handleLonIncrease}
-              variant="contained"
-              size="small"
-              sx={buttonSx}
-            >
-              Lon +10°
-            </Button>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="flex-end"
-            flexWrap="wrap"
-          >
-            <Button
-              onClick={handleLatDecrease}
-              variant="contained"
-              size="small"
-              sx={buttonSx}
-            >
-              Lat -10°
-            </Button>
-          </Stack>
         </Stack>
       </Stack>
     </Box>
