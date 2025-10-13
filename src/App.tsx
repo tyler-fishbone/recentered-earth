@@ -28,7 +28,7 @@ export default function App() {
   // toggle for graticule visibility
   const [showGraticule, setShowGraticule] = useState(false);
 
-  const [viewState] = useState({
+  const [viewState, setViewState] = useState({
     longitude: 0,
     latitude: 0,
     zoom: 0.5,
@@ -89,6 +89,7 @@ export default function App() {
           filled: false,
           getLineColor: [150, 150, 150, 200],
           lineWidthMinPixels: 1,
+          wrapLongitude: true,
         }),
       rotatedData &&
         new GeoJsonLayer({
@@ -121,6 +122,14 @@ export default function App() {
       <DeckGL
         views={new MapView({ repeat: false })}
         viewState={viewState}
+        onViewStateChange={({ viewState }) =>
+          setViewState({
+            longitude: viewState.longitude,
+            latitude: viewState.latitude,
+            zoom: viewState.zoom,
+            bearing: viewState.bearing || 0,
+          })
+        }
         controller={true}
         initialViewState={viewState}
         layers={layers}
@@ -145,6 +154,30 @@ export default function App() {
             {showGraticule ? 'Hide Graticule' : 'Show Graticule'}
           </Button>
         </Stack>
+
+        {/* View Controls */}
+        <Stack direction="row" spacing={2} justifyContent="center" width="100%">
+          <Button
+            onClick={() =>
+              setViewState(v => ({ ...v, bearing: (v.bearing + 90) % 360 }))
+            }
+            variant="contained"
+            color="secondary"
+          >
+            Rotate 90°
+          </Button>
+          <Button
+            onClick={() =>
+              setViewState(v => ({ ...v, bearing: (v.bearing + 180) % 360 }))
+            }
+            variant="contained"
+            color="secondary"
+          >
+            Mirror
+          </Button>
+        </Stack>
+
+        {/* Data Rotation Controls */}
         <Stack direction="row" spacing={2} justifyContent="center" width="100%">
           <Button
             onClick={() =>
