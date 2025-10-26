@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Stack, Button } from '@mui/material';
+import { Box, Stack, Button, useMediaQuery, useTheme } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
 import type { ViewState, Center } from '../types/map';
 
@@ -18,6 +18,11 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
   onCenterChange,
   isAccordionOpen,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobilePortrait = useMediaQuery(
+    '(max-width: 600px) and (orientation: portrait)'
+  );
   const handleRotate90 = () => {
     onViewStateChange({
       ...viewState,
@@ -87,34 +92,53 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
     <Box
       sx={{
         position: 'absolute',
-        bottom: isAccordionOpen ? 200 : 60,
-        right: 10,
+        bottom: isAccordionOpen ? (isMobile ? 180 : 200) : isMobile ? 50 : 60,
+        right: isMobile ? 5 : 10,
         zIndex: 1200,
         transition: 'bottom 0.3s ease-in-out',
       }}
     >
-      <Stack spacing={2} sx={{ width: '350px' }}>
+      <Stack
+        spacing={isMobile ? 1 : 2}
+        sx={{
+          width: isMobilePortrait ? '200px' : isMobile ? '280px' : '350px',
+        }}
+      >
         {/* 4-Way Navigation Controller */}
-        <Stack spacing={1} alignItems="center">
+        <Stack spacing={isMobile ? 0.5 : 1} alignItems="center">
           {/* Top row - Lat +10° */}
           <Button
             onClick={handleLatIncrease}
             variant="contained"
-            size="small"
-            sx={buttonSx}
+            size={isMobile ? 'small' : 'small'}
+            sx={{
+              ...buttonSx,
+              fontSize: isMobile ? '0.7rem' : '0.875rem',
+              minWidth: isMobile ? '60px' : 'auto',
+              padding: isMobile ? '4px 8px' : '6px 16px',
+            }}
           >
-            Lat +10°
+            {isMobile ? 'Lat +10' : 'Lat +10°'}
           </Button>
 
           {/* Middle row - Lon -10°, Reset, Lon +10° */}
-          <Stack direction="row" spacing={1} alignItems="center">
+          <Stack
+            direction="row"
+            spacing={isMobile ? 0.5 : 1}
+            alignItems="center"
+          >
             <Button
               onClick={handleLonDecrease}
               variant="contained"
               size="small"
-              sx={buttonSx}
+              sx={{
+                ...buttonSx,
+                fontSize: isMobile ? '0.7rem' : '0.875rem',
+                minWidth: isMobile ? '60px' : 'auto',
+                padding: isMobile ? '4px 8px' : '6px 16px',
+              }}
             >
-              Lon -10°
+              {isMobile ? 'Lon -10' : 'Lon -10°'}
             </Button>
             <Button
               onClick={handleReset}
@@ -122,22 +146,27 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
               size="small"
               sx={{
                 ...buttonSx,
-                minWidth: '48px',
-                width: '48px',
-                height: '48px',
+                minWidth: isMobile ? '36px' : '48px',
+                width: isMobile ? '36px' : '48px',
+                height: isMobile ? '36px' : '48px',
                 borderRadius: '50%',
               }}
               aria-label="Reset everything"
             >
-              <Refresh />
+              <Refresh sx={{ fontSize: isMobile ? '1rem' : '1.25rem' }} />
             </Button>
             <Button
               onClick={handleLonIncrease}
               variant="contained"
               size="small"
-              sx={buttonSx}
+              sx={{
+                ...buttonSx,
+                fontSize: isMobile ? '0.7rem' : '0.875rem',
+                minWidth: isMobile ? '60px' : 'auto',
+                padding: isMobile ? '4px 8px' : '6px 16px',
+              }}
             >
-              Lon +10°
+              {isMobile ? 'Lon +10' : 'Lon +10°'}
             </Button>
           </Stack>
 
@@ -146,16 +175,21 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
             onClick={handleLatDecrease}
             variant="contained"
             size="small"
-            sx={buttonSx}
+            sx={{
+              ...buttonSx,
+              fontSize: isMobile ? '0.7rem' : '0.875rem',
+              minWidth: isMobile ? '60px' : 'auto',
+              padding: isMobile ? '4px 8px' : '6px 16px',
+            }}
           >
-            Lat -10°
+            {isMobile ? 'Lat -10' : 'Lat -10°'}
           </Button>
         </Stack>
 
         {/* View Controls - Below navigation */}
         <Stack
           direction="row"
-          spacing={2}
+          spacing={isMobile ? 1 : 2}
           justifyContent="center"
           flexWrap="wrap"
         >
@@ -164,7 +198,12 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
             variant="contained"
             color="secondary"
             size="small"
-            sx={secondaryButtonSx}
+            sx={{
+              ...secondaryButtonSx,
+              fontSize: isMobile ? '0.7rem' : '0.875rem',
+              minWidth: isMobile ? '50px' : 'auto',
+              padding: isMobile ? '4px 8px' : '6px 16px',
+            }}
           >
             Flip
           </Button>
@@ -173,9 +212,14 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
             variant="contained"
             color="secondary"
             size="small"
-            sx={secondaryButtonSx}
+            sx={{
+              ...secondaryButtonSx,
+              fontSize: isMobile ? '0.7rem' : '0.875rem',
+              minWidth: isMobile ? '50px' : 'auto',
+              padding: isMobile ? '4px 8px' : '6px 16px',
+            }}
           >
-            Rotate 90°
+            {isMobile ? 'Rotate' : 'Rotate 90°'}
           </Button>
         </Stack>
       </Stack>

@@ -1,4 +1,5 @@
 export { AppBar } from './AppBar';
+export { GlobeView } from './GlobeView';
 export { NavigationControls } from './NavigationControls';
 export { MapControlsAccordion } from './MapControlsAccordion';
 export { InfoDialog } from './InfoDialog';
