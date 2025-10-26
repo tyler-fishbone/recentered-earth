@@ -67,10 +67,10 @@ export const GlobeView: React.FC<GlobeViewProps> = ({
     <Box
       sx={{
         position: 'fixed',
-        bottom: isAccordionOpen ? '200px' : '80px',
+        bottom: isAccordionOpen ? '250px' : '130px',
         left: '20px',
-        width: { xs: '150px', sm: '200px' },
-        height: { xs: '150px', sm: '200px' },
+        width: { xs: '150px', sm: '250px', md: '300px' },
+        height: { xs: '150px', sm: '250px', md: '300px' },
         borderRadius: '50%',
         overflow: 'hidden',
         boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
@@ -80,11 +80,13 @@ export const GlobeView: React.FC<GlobeViewProps> = ({
     >
       <Globe
         ref={globeRef}
-        width={200}
-        height={200}
+        width={300}
+        height={300}
         backgroundColor="rgba(0,0,0,0)"
         // Use a solid material color for the ocean to match main map background
-        globeMaterial={new MeshPhongMaterial({ color: new Color('#121212'), shininess: 0 })}
+        globeMaterial={
+          new MeshPhongMaterial({ color: new Color('#121212'), shininess: 0 })
+        }
         // No background image; keep transparent
         polygonsData={countriesData?.features || []}
         // Land color to mirror main map fill rgba(60,60,60,200)

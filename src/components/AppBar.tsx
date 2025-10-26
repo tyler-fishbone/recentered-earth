@@ -20,7 +20,7 @@ export const AppBar: React.FC<AppBarProps> = ({ onInfoClick }) => {
           component="div"
           sx={{ flexGrow: 1, fontWeight: 600 }}
         >
-          Recentered Earth
+          Mercator Projection From Different Points on Earth
         </Typography>
         <IconButton
           color="inherit"

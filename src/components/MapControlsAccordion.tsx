@@ -80,7 +80,7 @@ export const MapControlsAccordion: React.FC<MapControlsAccordionProps> = ({
               }
               label={
                 <Typography sx={{ color: '#ffffff', fontSize: '0.9rem' }}>
-                  Graticule
+                  Graticule - Morphed Original
                 </Typography>
               }
             />
