@@ -5,6 +5,7 @@ import { useMapData } from './hooks/useMapData';
 import { useMapLayers } from './hooks/useMapLayers';
 import {
   AppBar,
+  GlobeView,
   NavigationControls,
   MapControlsAccordion,
   InfoDialog,
@@ -25,6 +26,9 @@ export default function App() {
 
   // toggle for graticule visibility
   const [showGraticule, setShowGraticule] = useState(false);
+
+  // toggle for mini globe visibility
+  const [showGlobe, setShowGlobe] = useState(true);
 
   // UI state
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
@@ -87,6 +91,15 @@ export default function App() {
             onToggle={() => setControlsAccordionOpen(!controlsAccordionOpen)}
             showGraticule={showGraticule}
             onGraticuleChange={setShowGraticule}
+            showGlobe={showGlobe}
+            onGlobeChange={setShowGlobe}
+          />
+
+          {/* Mini Globe View */}
+          <GlobeView
+            center={center}
+            show={showGlobe}
+            isAccordionOpen={controlsAccordionOpen}
           />
         </Box>
 

@@ -16,6 +16,8 @@ interface MapControlsAccordionProps {
   onToggle: () => void;
   showGraticule: boolean;
   onGraticuleChange: (show: boolean) => void;
+  showGlobe: boolean;
+  onGlobeChange: (show: boolean) => void;
 }
 
 export const MapControlsAccordion: React.FC<MapControlsAccordionProps> = ({
@@ -23,6 +25,8 @@ export const MapControlsAccordion: React.FC<MapControlsAccordionProps> = ({
   onToggle,
   showGraticule,
   onGraticuleChange,
+  showGlobe,
+  onGlobeChange,
 }) => {
   return (
     <Box
@@ -77,6 +81,21 @@ export const MapControlsAccordion: React.FC<MapControlsAccordionProps> = ({
               label={
                 <Typography sx={{ color: '#ffffff', fontSize: '0.9rem' }}>
                   Graticule
+                </Typography>
+              }
+            />
+
+            {/* Mini Globe Toggle */}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showGlobe}
+                  onChange={e => onGlobeChange(e.target.checked)}
+                />
+              }
+              label={
+                <Typography sx={{ color: '#ffffff', fontSize: '0.9rem' }}>
+                  Mini Globe
                 </Typography>
               }
             />
