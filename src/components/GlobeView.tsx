@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 import Globe from 'react-globe.gl';
 import { MeshPhongMaterial, Color } from 'three';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import type { Center } from '../types/map';
 import { topoToGeoJson } from '../utils/topoToGeoJson';
 import type { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
@@ -17,6 +17,11 @@ export const GlobeView: React.FC<GlobeViewProps> = ({
   show,
   isAccordionOpen,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isMobilePortrait = useMediaQuery(
+    '(max-width: 600px) and (orientation: portrait)'
+  );
   const globeRef = useRef<any>(null);
 
   // Load countries data for the globe
@@ -59,7 +64,8 @@ export const GlobeView: React.FC<GlobeViewProps> = ({
     [center.lat, center.lon]
   );
 
-  if (!show) {
+  // Hide on mobile portrait by default, but allow user to toggle
+  if (!show || (isMobilePortrait && !show)) {
     return null;
   }
 
@@ -67,10 +73,16 @@ export const GlobeView: React.FC<GlobeViewProps> = ({
     <Box
       sx={{
         position: 'fixed',
-        bottom: isAccordionOpen ? '250px' : '130px',
-        left: '20px',
-        width: { xs: '150px', sm: '250px', md: '300px' },
-        height: { xs: '150px', sm: '250px', md: '300px' },
+        bottom: isAccordionOpen
+          ? isMobile
+            ? '200px'
+            : '250px'
+          : isMobile
+          ? '100px'
+          : '130px',
+        left: isMobile ? '10px' : '20px',
+        width: isMobilePortrait ? '100px' : isMobile ? '150px' : '300px',
+        height: isMobilePortrait ? '100px' : isMobile ? '150px' : '300px',
         borderRadius: '50%',
         overflow: 'hidden',
         boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
@@ -80,8 +92,8 @@ export const GlobeView: React.FC<GlobeViewProps> = ({
     >
       <Globe
         ref={globeRef}
-        width={300}
-        height={300}
+        width={isMobilePortrait ? 100 : isMobile ? 150 : 300}
+        height={isMobilePortrait ? 100 : isMobile ? 150 : 300}
         backgroundColor="rgba(0,0,0,0)"
         // Use a solid material color for the ocean to match main map background
         globeMaterial={

@@ -8,6 +8,8 @@ import {
   Switch,
   FormControlLabel,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { ExpandMore, Settings } from '@mui/icons-material';
 
@@ -28,6 +30,8 @@ export const MapControlsAccordion: React.FC<MapControlsAccordionProps> = ({
   showGlobe,
   onGlobeChange,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Box
       sx={{
@@ -51,7 +55,7 @@ export const MapControlsAccordion: React.FC<MapControlsAccordionProps> = ({
         <AccordionSummary
           expandIcon={<ExpandMore sx={{ color: '#ffffff' }} />}
           sx={{
-            minHeight: 48,
+            minHeight: isMobile ? 44 : 48,
             backgroundColor: '#2a2a2a',
             borderRadius: isOpen ? '16px 16px 0 0' : '16px',
             '& .MuiAccordionSummary-content': {
@@ -62,24 +66,42 @@ export const MapControlsAccordion: React.FC<MapControlsAccordionProps> = ({
         >
           <Settings sx={{ color: '#ffffff' }} />
           <Typography
-            variant="subtitle1"
-            sx={{ color: '#ffffff', fontWeight: 500 }}
+            variant={isMobile ? 'body1' : 'subtitle1'}
+            sx={{
+              color: '#ffffff',
+              fontWeight: 500,
+              fontSize: isMobile ? '0.9rem' : '1rem',
+            }}
           >
             Map Controls
           </Typography>
         </AccordionSummary>
         <AccordionDetails sx={{ backgroundColor: '#1e1e1e' }}>
-          <Stack spacing={3} sx={{ p: 2 }}>
+          <Stack spacing={isMobile ? 2 : 3} sx={{ p: isMobile ? 1.5 : 2 }}>
             {/* Graticule Toggle */}
             <FormControlLabel
               control={
                 <Switch
                   checked={showGraticule}
                   onChange={e => onGraticuleChange(e.target.checked)}
+                  sx={{
+                    '& .MuiSwitch-thumb': {
+                      width: isMobile ? 20 : 20,
+                      height: isMobile ? 20 : 20,
+                    },
+                    '& .MuiSwitch-track': {
+                      height: isMobile ? 12 : 14,
+                    },
+                  }}
                 />
               }
               label={
-                <Typography sx={{ color: '#ffffff', fontSize: '0.9rem' }}>
+                <Typography
+                  sx={{
+                    color: '#ffffff',
+                    fontSize: isMobile ? '0.8rem' : '0.9rem',
+                  }}
+                >
                   Graticule - Morphed Original
                 </Typography>
               }
@@ -91,10 +113,24 @@ export const MapControlsAccordion: React.FC<MapControlsAccordionProps> = ({
                 <Switch
                   checked={showGlobe}
                   onChange={e => onGlobeChange(e.target.checked)}
+                  sx={{
+                    '& .MuiSwitch-thumb': {
+                      width: isMobile ? 20 : 20,
+                      height: isMobile ? 20 : 20,
+                    },
+                    '& .MuiSwitch-track': {
+                      height: isMobile ? 12 : 14,
+                    },
+                  }}
                 />
               }
               label={
-                <Typography sx={{ color: '#ffffff', fontSize: '0.9rem' }}>
+                <Typography
+                  sx={{
+                    color: '#ffffff',
+                    fontSize: isMobile ? '0.8rem' : '0.9rem',
+                  }}
+                >
                   Mini Globe
                 </Typography>
               }

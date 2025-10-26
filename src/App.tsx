@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, ThemeProvider } from '@mui/material';
 import { darkTheme } from './theme';
 import { useMapData } from './hooks/useMapData';
 import { useMapLayers } from './hooks/useMapLayers';
+import { useMobileDetection } from './hooks/useMobileDetection';
 import {
   AppBar,
   GlobeView,
@@ -18,6 +19,9 @@ export default function App() {
   // Load map data
   const { data, graticuleData } = useMapData();
 
+  // Mobile detection
+  const { isMobilePortrait } = useMobileDetection();
+
   // rotation center — this is the "new 0,0" for projection
   const [center, setCenter] = useState<Center>({
     lon: 0,
@@ -27,8 +31,8 @@ export default function App() {
   // toggle for graticule visibility
   const [showGraticule, setShowGraticule] = useState(false);
 
-  // toggle for mini globe visibility
-  const [showGlobe, setShowGlobe] = useState(true);
+  // toggle for mini globe visibility - hide by default on mobile portrait
+  const [showGlobe, setShowGlobe] = useState(!isMobilePortrait);
 
   // UI state
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
@@ -40,6 +44,15 @@ export default function App() {
     zoom: 0.5,
     bearing: 0,
   });
+
+  // Update globe visibility when orientation changes
+  useEffect(() => {
+    if (isMobilePortrait) {
+      setShowGlobe(false);
+    } else {
+      setShowGlobe(true);
+    }
+  }, [isMobilePortrait]);
 
   // Generate map layers
   const { layers } = useMapLayers({
